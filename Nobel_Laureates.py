@@ -22,10 +22,11 @@ if __name__ == '__main__':
     dataset['born_in'] = dataset['born_in'].apply(lambda x:  'USA' if x in ['US', 'United States', 'U.S.'] else x)
     dataset['born_in'] = dataset['born_in'].apply(lambda x:  'UK' if x == 'United Kingdom' else x)
 
-    # third step
+    # third step: generating new column with year of birth extracted from date of birth and creating new column representing age of winning the prize
     dataset['year_born'] = dataset['date_of_birth'].str.extract(r'(\d{4})', expand=False).astype(int)
     dataset['age_of_winning'] = dataset['year'] - dataset['year_born']
 
+    # fourth step: rearranging the colunm with country of births information and preparing a pie chart illustrating it
     dataset['born_in'] = dataset['born_in'].apply(lambda x:  'Other countries' if (dataset['born_in'].value_counts()[x] < 25) else x)
 
     data = dataset['born_in'].value_counts().tolist()
@@ -37,6 +38,7 @@ if __name__ == '__main__':
     plt.pie(data, labels=labels, colors=colors, explode=explode, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p,p * sum(data)/100))
     plt.show()
 
+    # fifth step: deleting rows with no category value and preparing a bar chart illustrating distribution of female and male winners according to the category
     dataset['category'] = dataset['category'].apply(lambda x: None if x == '' else x)
     dataset.dropna(subset='category', inplace=True)
     category_dict = dataset.groupby(['category']).agg({'gender': 'value_counts'}).to_dict()['gender']
@@ -56,6 +58,7 @@ if __name__ == '__main__':
 
     plt.show()
 
+    # sixth step: generating a box plot for ages of getting the Nobel Prize for each category
     ages_list = [dataset.loc[dataset.category==x, 'age_of_winning'] for x in categories]
     data_1 = ages_list[0].to_list()
     data_2 = ages_list[1].to_list()
