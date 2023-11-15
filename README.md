@@ -1,6 +1,6 @@
 # Nobel Laureates
 
-Project from Introduction to Data Science course excercising usage of JSON format, numpy, pandas and matplotlib modules, file handling and data preprocessing techniques.
+Project from Introduction to Data Science course exercising usage of JSON format, numpy, pandas and matplotlib modules, file handling and data preprocessing techniques.
 
 ## Installation
 
